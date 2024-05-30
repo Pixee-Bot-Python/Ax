@@ -6,7 +6,6 @@
 
 # pyre-strict
 
-import random
 import string
 from typing import Tuple
 from unittest.mock import patch
@@ -34,6 +33,7 @@ from ax.utils.testing.core_stubs import (
     SpecialGenerationStrategy,
 )
 from ax.utils.testing.modeling_stubs import get_generation_strategy
+import secrets
 
 
 class TestWithDBSettingsBase(TestCase):
@@ -62,7 +62,7 @@ class TestWithDBSettingsBase(TestCase):
         """Get an Experiment instance with random name."""
 
         experiment = get_experiment()
-        experiment_name = "".join(random.choice(string.ascii_letters) for i in range(8))
+        experiment_name = "".join(secrets.choice(string.ascii_letters) for i in range(8))
         experiment.name = experiment_name
         return experiment
 
@@ -70,7 +70,7 @@ class TestWithDBSettingsBase(TestCase):
         """Get an GenerationStrategy instance with random name."""
 
         generation_strategy = get_generation_strategy(with_callable_model_kwarg=False)
-        gs_name = "".join(random.choice(string.ascii_letters) for i in range(8))
+        gs_name = "".join(secrets.choice(string.ascii_letters) for i in range(8))
         generation_strategy._name = gs_name
         return generation_strategy
 

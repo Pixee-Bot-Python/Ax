@@ -6,7 +6,6 @@
 
 # pyre-strict
 
-import random
 from typing import List
 from unittest.mock import MagicMock, patch
 
@@ -42,6 +41,7 @@ from ax.utils.testing.core_stubs import (
     get_sobol,
 )
 from ax.utils.testing.mock import fast_botorch_optimize
+import secrets
 
 best_point_module: str = _derel_opt_config_wrapper.__module__
 DUMMY_OPTIMIZATION_CONFIG = "test_optimization_config"
@@ -397,7 +397,7 @@ class TestBestPointUtils(TestCase):
         self.assertTrue(torch.equal(trial_indices, expected_trial_indices))
         # Works with messed up ordering of data.
         clone_dicts = df_dicts.copy()
-        random.shuffle(clone_dicts)
+        secrets.SystemRandom().shuffle(clone_dicts)
         experiment._data_by_trial = {}
         experiment.attach_data(Data(df=pd.DataFrame.from_records(clone_dicts)))
         Y, trial_indices = extract_Y_from_data(
