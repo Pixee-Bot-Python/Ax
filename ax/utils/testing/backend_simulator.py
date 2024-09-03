@@ -7,7 +7,6 @@
 # pyre-strict
 
 import logging
-import random
 import time
 from dataclasses import dataclass
 
@@ -16,6 +15,7 @@ from typing import Dict, List, Optional
 
 from ax.core.base_trial import TrialStatus
 from ax.utils.common.logger import get_logger
+import secrets
 
 logger: Logger = get_logger(__name__)
 
@@ -287,7 +287,7 @@ class BackendSimulator:
         # flip a coin to see if the trial fails (for now fail instantly)
         # TODO: Allow failure behavior based on a survival rate
         if self.failure_rate > 0:
-            if random.random() < self.failure_rate:
+            if secrets.SystemRandom().random() < self.failure_rate:
                 self._failed.append(
                     SimTrial(
                         trial_index=trial_index,

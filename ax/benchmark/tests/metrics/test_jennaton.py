@@ -6,21 +6,21 @@
 # pyre-strict
 
 import math
-from random import random
 from unittest import mock
 
 from ax.benchmark.metrics.jenatton import jenatton_test_function, JenattonMetric
 from ax.core.arm import Arm
 from ax.core.trial import Trial
 from ax.utils.common.testutils import TestCase
+import secrets
 
 
 class JenattonMetricTest(TestCase):
 
     def test_jenatton_test_function(self) -> None:
-        rand_params = {f"x{i}": random() for i in range(4, 8)}
-        rand_params["r8"] = random()
-        rand_params["r9"] = random()
+        rand_params = {f"x{i}": secrets.SystemRandom().random() for i in range(4, 8)}
+        rand_params["r8"] = secrets.SystemRandom().random()
+        rand_params["r9"] = secrets.SystemRandom().random()
 
         for x3 in (0, 1):
             self.assertAlmostEqual(

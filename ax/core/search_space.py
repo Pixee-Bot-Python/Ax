@@ -13,7 +13,6 @@ import warnings
 from dataclasses import dataclass, field
 from functools import reduce
 from logging import Logger
-from random import choice, uniform
 from typing import Callable, Dict, Hashable, List, Mapping, Optional, Set, Tuple, Union
 
 import numpy as np
@@ -41,6 +40,7 @@ from ax.utils.common.constants import Keys
 from ax.utils.common.logger import get_logger
 from ax.utils.common.typeutils import not_none
 from scipy.special import expit, logit
+import secrets
 
 
 logger: Logger = get_logger(__name__)
@@ -819,14 +819,14 @@ class HierarchicalSearchSpace(SearchSpace):
                 dummy_values_to_inject[param_name] = param.value
             elif isinstance(param, ChoiceParameter):
                 if use_random_dummy_values:
-                    dummy_value = choice(param.values)
+                    dummy_value = secrets.choice(param.values)
                 else:
                     dummy_value = param.values[len(param.values) // 2]
                 dummy_values_to_inject[param_name] = dummy_value
             elif isinstance(param, RangeParameter):
                 lower, upper = float(param.lower), float(param.upper)
                 if use_random_dummy_values:
-                    val = uniform(lower, upper)
+                    val = secrets.SystemRandom().uniform(lower, upper)
                 elif param.log_scale:
                     log_lower, log_upper = math.log10(lower), math.log10(upper)
                     log_mid = (log_upper + log_lower) / 2.0

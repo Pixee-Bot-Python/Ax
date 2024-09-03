@@ -8,7 +8,6 @@
 
 import functools
 from copy import deepcopy
-from random import randint
 from typing import Any, Callable, Dict, List, Optional, Protocol, Tuple, Type, Union
 
 import torch
@@ -46,6 +45,7 @@ from gpytorch.priors import Prior
 from gpytorch.priors.lkj_prior import LKJCovariancePrior
 from gpytorch.priors.torch_priors import GammaPrior, LogNormalPrior
 from torch import Tensor
+import secrets
 
 
 MIN_OBSERVED_NOISE_LEVEL = 1e-6
@@ -449,7 +449,7 @@ def _get_acquisition_func(
         X_pending=X_pending,
         prune_baseline=prune_baseline,
         mc_samples=mc_samples,
-        seed=randint(1, 10000),
+        seed=secrets.SystemRandom().randint(1, 10000),
         marginalize_dim=marginalize_dim,
         constraints=con_tfs,
     )
