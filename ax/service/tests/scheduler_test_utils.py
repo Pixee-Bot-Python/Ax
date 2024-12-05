@@ -10,7 +10,6 @@ import os
 from datetime import datetime, timedelta
 from logging import WARNING
 from math import ceil
-from random import randint
 from tempfile import NamedTemporaryFile
 from typing import Any, Callable, cast, Dict, Iterable, Optional, Set, Type
 from unittest.mock import call, Mock, patch, PropertyMock
@@ -79,6 +78,7 @@ from ax.utils.testing.mock import fast_botorch_optimize
 from pyre_extensions import none_throws
 
 from sqlalchemy.orm.exc import StaleDataError
+import secrets
 
 DUMMY_EXCEPTION = "test_exception"
 
@@ -92,9 +92,9 @@ class SyntheticRunnerWithStatusPolling(SyntheticRunner):
     ) -> Dict[TrialStatus, Set[int]]:
         # Pretend that sometimes trials take a few seconds to complete and that they
         # might get completed out of order.
-        if randint(0, 3) > 0:
+        if secrets.SystemRandom().randint(0, 3) > 0:
             running = [t.index for t in trials]
-            return {TrialStatus.COMPLETED: {running[randint(0, len(running) - 1)]}}
+            return {TrialStatus.COMPLETED: {running[secrets.SystemRandom().randint(0, len(running) - 1)]}}
         return {}
 
 
@@ -156,7 +156,7 @@ class RunnerWithFrequentFailedTrials(SyntheticRunner):
         )
         # Poll different status next time.
         self.poll_failed_next_time = not self.poll_failed_next_time
-        return {status: {running[randint(0, len(running) - 1)]}}
+        return {status: {running[secrets.SystemRandom().randint(0, len(running) - 1)]}}
 
 
 class RunnerWithFailedAndAbandonedTrials(SyntheticRunner):
@@ -179,7 +179,7 @@ class RunnerWithFailedAndAbandonedTrials(SyntheticRunner):
         # Poll different status next time.
         self.status_idx = (self.status_idx + 1) % 3
 
-        return {status: {running[randint(0, len(running) - 1)]}}
+        return {status: {running[secrets.SystemRandom().randint(0, len(running) - 1)]}}
 
 
 class RunnerWithAllFailedTrials(SyntheticRunner):
@@ -187,16 +187,16 @@ class RunnerWithAllFailedTrials(SyntheticRunner):
         self, trials: Iterable[BaseTrial]
     ) -> Dict[TrialStatus, Set[int]]:
         running = [t.index for t in trials]
-        return {TrialStatus.FAILED: {running[randint(0, len(running) - 1)]}}
+        return {TrialStatus.FAILED: {running[secrets.SystemRandom().randint(0, len(running) - 1)]}}
 
 
 class NoReportResultsRunner(SyntheticRunner):
     def poll_trial_status(
         self, trials: Iterable[BaseTrial]
     ) -> Dict[TrialStatus, Set[int]]:
-        if randint(0, 3) > 0:
+        if secrets.SystemRandom().randint(0, 3) > 0:
             running = [t.index for t in trials]
-            return {TrialStatus.COMPLETED: {running[randint(0, len(running) - 1)]}}
+            return {TrialStatus.COMPLETED: {running[secrets.SystemRandom().randint(0, len(running) - 1)]}}
         return {}
 
 
