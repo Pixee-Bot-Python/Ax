@@ -6,7 +6,6 @@
 
 # pyre-strict
 
-import random
 
 import pandas as pd
 from ax.core.data import (
@@ -17,6 +16,7 @@ from ax.core.data import (
 )
 from ax.utils.common.testutils import TestCase
 from ax.utils.common.timeutils import current_timestamp_in_millis
+import secrets
 
 
 class DataTest(TestCase):
@@ -324,7 +324,7 @@ class DataTest(TestCase):
         self.assertEqual(Data.column_data_types(), Data.COLUMN_DATA_TYPES)
 
     def test_data_column_data_types_with_extra_columns(self) -> None:
-        bartype = random.choice([str, int, float])
+        bartype = secrets.choice([str, int, float])
         columns = Data.column_data_types(extra_column_types={"foo": bartype})
         for c, t in Data.COLUMN_DATA_TYPES.items():
             self.assertEqual(columns[c], t)
@@ -341,7 +341,7 @@ class DataTest(TestCase):
     # this test just documents expected behavior
     # that excluded_columns wins out
     def test_data_column_data_types_with_extra_columns_also_deleted(self) -> None:
-        bartype = random.choice([str, int, float])
+        bartype = secrets.choice([str, int, float])
         excluded_columns = ["fidelities", "foo"]
         columns = Data.column_data_types(
             extra_column_types={"foo": bartype},

@@ -10,7 +10,6 @@ from __future__ import annotations
 
 import math
 from collections import defaultdict
-from random import random
 from typing import Any, Iterable, Mapping, Optional
 
 import numpy as np
@@ -23,6 +22,7 @@ from ax.metrics.noisy_function_map import NoisyFunctionMapMetric
 from ax.utils.common.result import Err, Ok
 from ax.utils.common.typeutils import checked_cast, not_none
 from ax.utils.measurement.synthetic_functions import branin
+import secrets
 
 FIDELITY = [0.1, 0.4, 0.7, 1.0]
 
@@ -167,7 +167,7 @@ class BraninFidelityMapMetric(NoisyFunctionMapMetric):
         x1, x2 = x
         fidelity = FIDELITY[self.index]
 
-        fidelity_penalty = random() * math.pow(1.0 - fidelity, 2.0)
+        fidelity_penalty = secrets.SystemRandom().random() * math.pow(1.0 - fidelity, 2.0)
         mean = checked_cast(float, branin(x1=x1, x2=x2)) - fidelity_penalty
 
         return {"mean": mean, "fidelity": fidelity}

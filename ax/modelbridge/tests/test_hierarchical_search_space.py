@@ -8,7 +8,6 @@
 
 
 from contextlib import ExitStack
-from random import random
 from typing import List
 
 from ax.core.experiment import Experiment
@@ -31,6 +30,7 @@ from ax.utils.common.constants import Keys
 from ax.utils.common.testutils import TestCase
 from ax.utils.common.typeutils import checked_cast, not_none
 from ax.utils.testing.mock import fast_botorch_optimize
+import secrets
 
 
 class TestHierarchicalSearchSpace(TestCase):
@@ -145,7 +145,7 @@ class TestHierarchicalSearchSpace(TestCase):
             optimization_config=OptimizationConfig(
                 objective=Objective(
                     metric=GenericNoisyFunctionMetric(
-                        name="random", f=lambda _: random()
+                        name="random", f=lambda _: secrets.SystemRandom().random()
                     ),
                     minimize=True,
                 )
