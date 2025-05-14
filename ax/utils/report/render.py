@@ -145,4 +145,4 @@ def _load_html_template(name: str) -> str:
 
 
 def _get_jinja_environment() -> Environment:
-    return Environment(loader=FunctionLoader(_load_html_template))
+    return Environment(loader=FunctionLoader(_load_html_template), autoescape=True)
