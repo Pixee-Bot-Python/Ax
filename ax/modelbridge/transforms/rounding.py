@@ -7,7 +7,6 @@
 # pyre-strict
 
 import math
-import random
 from copy import copy
 from typing import Set
 
@@ -15,12 +14,13 @@ import numpy as np
 from ax.core.parameter_constraint import OrderConstraint
 from ax.core.search_space import SearchSpace
 from ax.core.types import TParameterization
+import secrets
 
 
 def randomized_round(x: float) -> int:
     """Randomized round of x"""
     z = math.floor(x)
-    return int(z + float(random.random() <= (x - z)))
+    return int(z + float(secrets.SystemRandom().random() <= (x - z)))
 
 
 def randomized_onehot_round(x: np.ndarray) -> np.ndarray:
